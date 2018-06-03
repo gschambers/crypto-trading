@@ -1,0 +1,10 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background-image: linear-gradient(135deg, #ABDCFF 10%, #0396FF 100%);
+    color: white;
+    font: normal 16px/1 Roboto, sans-serif;
+}
