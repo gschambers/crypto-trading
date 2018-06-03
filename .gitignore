@@ -1,0 +1,13 @@
+# DEPENDENCIES
+node_modules
+
+# IDE
+.vscode
+
+# BUILD
+static/index.js
+crypto-trading
+
+# LOGS
+npm-debug.log
+yarn-error.log
