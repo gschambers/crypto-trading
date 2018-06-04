@@ -5,7 +5,7 @@ type Bridge struct {
 	clients    map[*Client]map[Instrument]bool
 	register   chan *Client
 	unregister chan *Client
-	ticker     chan Tick
+	ticks      chan Tick
 }
 
 func newBridge() *Bridge {
@@ -13,7 +13,7 @@ func newBridge() *Bridge {
 		clients:    make(map[*Client]map[Instrument]bool),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		ticker:     make(chan Tick),
+		ticks:      make(chan Tick),
 	}
 }
 
@@ -26,8 +26,6 @@ func (bridge *Bridge) broadcast(tick Tick) {
 }
 
 func (bridge *Bridge) run() {
-	go startTickStream(bridge)
-
 	for {
 		select {
 		case client := <-bridge.register:
@@ -36,7 +34,7 @@ func (bridge *Bridge) run() {
 			if _, ok := bridge.clients[client]; ok {
 				delete(bridge.clients, client)
 			}
-		case tick := <-bridge.ticker:
+		case tick := <-bridge.ticks:
 			bridge.broadcast(tick)
 		}
 	}

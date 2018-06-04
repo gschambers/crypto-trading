@@ -29,7 +29,10 @@ func serveWebsocket(bridge *Bridge, w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	bridge := newBridge()
+	ticker := newTicker(bridge)
+
 	go bridge.run()
+	go ticker.run()
 
 	http.HandleFunc("/stream", func(w http.ResponseWriter, r *http.Request) {
 		serveWebsocket(bridge, w, r)
