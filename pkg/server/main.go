@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 )
 
@@ -28,21 +27,16 @@ func serveWebsocket(bridge *Bridge, w http.ResponseWriter, r *http.Request) {
 	go client.writeLoop()
 }
 
-func NewRouter() *mux.Router {
-	router := mux.NewRouter()
-
+func StreamServer() http.HandlerFunc {
 	bridge := newBridge()
 	ticker := newTicker(bridge)
 
 	go bridge.run()
 	go ticker.run()
 
-	router.HandleFunc("/stream", func(w http.ResponseWriter, r *http.Request) {
+	var handler http.HandlerFunc = func(w http.ResponseWriter, r *http.Request) {
 		serveWebsocket(bridge, w, r)
-	})
+	}
 
-	fs := http.FileServer(http.Dir("./web/static"))
-	router.PathPrefix("/").Handler(fs)
-
-	return router
+	return handler
 }
