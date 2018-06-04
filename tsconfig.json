@@ -4,20 +4,18 @@
       "lib": ["dom", "es2015", "es2015.promise"],
       "listEmittedFiles": true,
       "module": "commonjs",
-      "outDir": "./dist",
       "pretty": true,
       "strict": true,
       "target": "es5",
       "baseUrl": ".",
       "paths": {
-        "~modules/*": ["./src/modules/*"],
+        "~modules/*": ["./web/app/modules/*"],
       },
       "noUnusedLocals": true,
       "noUnusedParameters": true
     },
 
     "include": [
-      "@types/**/*",
-      "src/**/*"
+      "web/app/**/*"
     ]
   }

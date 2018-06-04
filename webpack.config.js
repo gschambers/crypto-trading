@@ -4,17 +4,17 @@ const mode = "development";
 module.exports = {
     mode,
 
-    entry: "./src/index.tsx",
+    entry: "./web/app/index.tsx",
 
     output: {
         filename: "index.js",
-        path: path.resolve(__dirname, "../static"),
+        path: path.resolve(__dirname, "web/static"),
         publicPath: "/",
     },
 
     resolve: {
         alias: {
-            "~modules": path.resolve(__dirname, "src/modules"),
+            "~modules": path.resolve(__dirname, "web/app/modules"),
         },
 
         extensions: [".ts", ".tsx", ".js", ".json"],

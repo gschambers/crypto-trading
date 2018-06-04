@@ -17,7 +17,7 @@ NB. the synthetic price feed is currently hardcoded to generate prices _only_ fo
 
 0. Ensure `yarn` is installed (https://yarnpkg.com)
 1. Fetch project: `go get gitlab.com/gschambers/crypto-trading`
-2. Install client dependencies: `cd client && yarn install`
-3. Build client: `cd client && yarn build`
+2. Install client dependencies: `yarn install`
+3. Build client: `yarn build`
 4. Build server: `go build`
-5. Run: `./crypto-currency` and visit `http://localhost:3000`
+5. Run: `./crypto-trading` and visit `http://localhost:3000`

@@ -1,4 +1,4 @@
-package main
+package server
 
 // Bridge between clients and price stream ticks
 type Bridge struct {

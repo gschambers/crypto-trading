@@ -24,6 +24,6 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --content-base ../static"
+    "start": "webpack-dev-server --content-base web/static"
   }
 }

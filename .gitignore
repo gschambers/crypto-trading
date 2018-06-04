@@ -5,7 +5,7 @@ node_modules
 .vscode
 
 # BUILD
-static/index.js
+web/static/index.js
 crypto-trading
 
 # LOGS
