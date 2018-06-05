@@ -21,3 +21,9 @@ NB. the synthetic price feed is currently hardcoded to generate prices _only_ fo
 3. Build client: `yarn build`
 4. Build server: `go build`
 5. Run: `./crypto-trading` and visit `http://localhost:3000`
+
+## TODO
+
+* Integrate with GDAX WebSocket feed for live market data
+* Implement visualisations for historical and live market data
+* Simulate market, limit and stop order placing
