@@ -1,41 +1,55 @@
 package server
 
-// Bridge between clients and price stream ticks
+import (
+	"sync"
+
+	"gitlab.com/gschambers/crypto-trading/pkg/book"
+)
+
 type Bridge struct {
-	clients    map[*Client]map[Instrument]bool
-	register   chan *Client
-	unregister chan *Client
-	ticks      chan Tick
+	book *book.Book
+
+	lock    sync.RWMutex
+	clients map[*Client]bool
 }
 
-func newBridge() *Bridge {
+func newBridge(book *book.Book) *Bridge {
 	return &Bridge{
-		clients:    make(map[*Client]map[Instrument]bool),
-		register:   make(chan *Client),
-		unregister: make(chan *Client),
-		ticks:      make(chan Tick),
+		book: book,
+
+		lock:    sync.RWMutex{},
+		clients: make(map[*Client]bool),
 	}
 }
 
-func (bridge *Bridge) broadcast(tick Tick) {
-	for client, instruments := range bridge.clients {
-		if _, ok := instruments[tick.Instrument]; ok {
-			client.outbox <- tick
-		}
+func (bridge *Bridge) reader() {
+	for message := range bridge.book.Outbox {
+		bridge.broadcast(message)
 	}
 }
 
-func (bridge *Bridge) run() {
-	for {
-		select {
-		case client := <-bridge.register:
-			bridge.clients[client] = make(map[Instrument]bool)
-		case client := <-bridge.unregister:
-			if _, ok := bridge.clients[client]; ok {
-				delete(bridge.clients, client)
-			}
-		case tick := <-bridge.ticks:
-			bridge.broadcast(tick)
+func (bridge *Bridge) broadcast(summary *book.MarketSummary) {
+	bridge.lock.RLock()
+	for client := range bridge.clients {
+		if client.HasSubscription(summary.Market) {
+			client.Send(summary)
 		}
 	}
+	bridge.lock.RUnlock()
+}
+
+func (bridge *Bridge) registerClient(client *Client) {
+	bridge.lock.Lock()
+	bridge.clients[client] = true
+	bridge.lock.Unlock()
+}
+
+func (bridge *Bridge) deregisterClient(client *Client) {
+	bridge.lock.Lock()
+	delete(bridge.clients, client)
+	bridge.lock.Unlock()
+}
+
+func (bridge *Bridge) notifySubscription(client *Client, instrument string) {
+	client.Send(bridge.book.MarketSummary(instrument))
 }

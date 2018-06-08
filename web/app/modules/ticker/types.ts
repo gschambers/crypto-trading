@@ -1,9 +1,10 @@
-export interface Instrument {
-    from: string;
-    to: string;
+interface PriceSummary {
+    price: number;
+    volume: number;
 }
 
-export interface Tick {
-    instrument: Instrument;
-    price: number;
+export interface MarketSummary {
+    market: string;
+    ask: PriceSummary;
+    bid: PriceSummary;
 }

@@ -1,15 +1,15 @@
 import { Subject } from "rxjs";
-import { Instrument, Tick } from "./types";
+import { MarketSummary } from "./types";
 
 const STREAM_URL = `ws://${location.host}/stream`;
 
 interface Message {
     action: "subscribe" | "unsubscribe";
-    instrument: Instrument;
+    payload: string;
 }
 
 export class Stream {
-    private subject = new Subject<Tick>();
+    private subject = new Subject<MarketSummary>();
     private socket: WebSocket | null = null;
     private messageBuffer: Message[] = [];
 
@@ -22,8 +22,8 @@ export class Stream {
     };
 
     handleMessage = (evt: MessageEvent) => {
-        const tick: Tick = JSON.parse(evt.data);
-        this.subject.next(tick);
+        const summary: MarketSummary = JSON.parse(evt.data);
+        this.subject.next(summary);
     };
 
     connect() {
@@ -43,17 +43,17 @@ export class Stream {
         return this.subject.asObservable();
     }
 
-    subscribe(instrument: Instrument) {
+    subscribe(instrument: string) {
         this.send({
             action: "subscribe",
-            instrument,
+            payload: instrument,
         });
     }
 
-    unsubscribe(instrument: Instrument) {
+    unsubscribe(instrument: string) {
         this.send({
             action: "unsubscribe",
-            instrument,
+            payload: instrument,
         });
     }
 
