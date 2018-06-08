@@ -1,17 +1,15 @@
 # Crypto Trading
 _A demo trading visualisation using Go and React_
 
-This app comprises a backend price stream service and WebSocket interface - written in Go - to power a simple UI visualisation - written in React.
+This app comprises a backend order book, price ticker and WebSocket interface - written in Go - to power a simple UI visualisation - written in React.
 
-The backend service connects to a firehose of currency exchange prices (synthesised here in a tight loop, to better simulate load) and broadcasts those ticks over a websocket to any subscribed client. Clients receive and buffer ticks in order to render a simple sparkline.
+The backend service connects to a firehose of currency exchange prices (via GDAX public price feed) and broadcasts those ticks over a websocket to any subscribed client. Clients receive and buffer ticks in order to render a simple sparkline.
 
 To subscribe to a currency pair, the client sends a message in the following format:
 
 ```
-client.subscribe({ from: "BTC", to: "USD" });
+client.subscribe("BTC-USD");
 ```
-
-NB. the synthetic price feed is currently hardcoded to generate prices _only_ for BTC/USD, in the range 100-105.
 
 ## Getting started
 
@@ -24,6 +22,6 @@ NB. the synthetic price feed is currently hardcoded to generate prices _only_ fo
 
 ## TODO
 
-* Integrate with GDAX WebSocket feed for live market data
-* Implement visualisations for historical and live market data
+* Update live visualisation to represent current market price and volume
+* Implement visualisations for historical market data
 * Simulate market, limit and stop order placing
