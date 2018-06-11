@@ -3,7 +3,7 @@ _A demo trading visualisation using Go and React_
 
 This app comprises a backend order book, price ticker and WebSocket interface - written in Go - to power a simple UI visualisation - written in React.
 
-The backend service connects to a firehose of currency exchange prices (via GDAX public price feed) and broadcasts those ticks over a websocket to any subscribed client. Clients receive and buffer ticks in order to render a simple sparkline.
+The backend service connects to a firehose of currency exchange prices (via GDAX public price feed) and broadcasts those ticks over a websocket to any subscribed client. Clients sample those ticks to show the current ask price and volume on an animated scale.
 
 To subscribe to a currency pair, the client sends a message in the following format:
 
@@ -22,6 +22,5 @@ client.subscribe("BTC-USD");
 
 ## TODO
 
-* Update live visualisation to represent current market price and volume
 * Implement visualisations for historical market data
 * Simulate market, limit and stop order placing
