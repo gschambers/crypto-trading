@@ -1,2 +1,3 @@
+export { TickerWheel } from "./components/TickerWheel";
 export { Stream } from "./stream";
-export { MarketSummary } from "./types";
+export { MarketSummary, PriceSummary } from "./types";

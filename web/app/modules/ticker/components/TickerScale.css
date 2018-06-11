@@ -1,0 +1,38 @@
+.TickerScale {
+    margin-right: 5px;
+    width: 100px;
+}
+
+    .TickerScale-pip {
+        margin: 3px 0;
+        height: 1px;
+    }
+
+    .TickerScale-pip--full {
+        position: relative;
+        margin-left: 65px;
+        width: 35px;
+        background-color: hsl(220, 21%, 50%);
+    }
+
+    .TickerScale-pip--tenth {
+        margin-left: 75px;
+        width: 25px;
+        background-color: hsl(220, 21%, 40%);
+    }
+
+    .TickerScale-pip--hundredth {
+        margin-left: 85px;
+        width: 15px;
+        background-color: hsl(220, 21%, 30%);
+    }
+
+        .TickerScale-pipValue {
+            position: absolute;
+            left: -65px;
+            width: 60px;
+            font-size: 12px;
+            text-align: right;
+            color: hsl(220, 21%, 70%);
+            transform: translateY(-50%);
+        }

@@ -1,0 +1,6 @@
+.TickerWheel {
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    overflow: hidden;
+}

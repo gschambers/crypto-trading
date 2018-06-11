@@ -1,4 +1,4 @@
-interface PriceSummary {
+export interface PriceSummary {
     price: number;
     volume: number;
 }

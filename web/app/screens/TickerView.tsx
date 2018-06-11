@@ -1,19 +1,21 @@
-import { prepend, reverse, slice } from "ramda";
 import * as React from "react";
-import { Sparklines, SparklinesLine, SparklinesSpots } from "react-sparklines";
 import { Subscription } from "rxjs";
-import { Stream } from "~modules/ticker";
+import { sampleTime } from "rxjs/operators";
+
+import { Loading } from "~modules/application";
+import { PriceSummary, Stream, TickerWheel } from "~modules/ticker";
+
 import "./TickerView.css";
 
 interface State {
     instrument: string;
-    priceBuffer: number[];
+    summary: PriceSummary | null;
 }
 
 export class TickerView extends React.Component<{}, State> {
     state: State = {
         instrument: "BTC-USD",
-        priceBuffer: [],
+        summary: null,
     };
 
     private stream = new Stream();
@@ -24,12 +26,10 @@ export class TickerView extends React.Component<{}, State> {
         this.stream.subscribe(this.state.instrument);
         this.subscription.add(
             this.stream.observe()
-                .subscribe((summary) => {
-                    let priceBuffer = this.state.priceBuffer;
-                    priceBuffer = prepend(summary.ask.price, priceBuffer);
-                    priceBuffer = slice(0, 25, priceBuffer);
-                    this.setState({ priceBuffer });
-                })
+                .pipe(sampleTime(500))
+                .subscribe((summary) => this.setState({
+                    summary: summary.ask,
+                }))
         );
     }
 
@@ -39,20 +39,20 @@ export class TickerView extends React.Component<{}, State> {
     }
 
     render() {
-        const { instrument } = this.state;
+        const { summary } = this.state;
+        const loading = summary === null;
+
+        if (loading) {
+            return (
+                <div className="TickerView is-loading">
+                    <Loading />
+                </div>
+            );
+        }
 
         return (
             <div className="TickerView">
-                <div className="TickerView-title">
-                    {instrument}
-                </div>
-
-                <div className="TickerView-body">
-                    <Sparklines data={reverse(this.state.priceBuffer)} svgHeight={240}>
-                        <SparklinesLine color="rgba(255, 255, 255, 0.5)" style={{ fill: "none" }} />
-                        <SparklinesSpots style={{ fill: "white" }} />
-                    </Sparklines>
-                </div>
+                <TickerWheel {...(summary as PriceSummary)} />
             </div>
         );
     }

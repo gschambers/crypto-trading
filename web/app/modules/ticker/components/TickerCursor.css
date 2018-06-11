@@ -1,0 +1,35 @@
+.TickerCursor {
+    position: relative;
+    box-sizing: border-box;
+    width: 120px;
+    padding: 15px;
+    background: hsl(220, 21%, 12%);
+    border-radius: 5px;
+    box-shadow: 0 0 50px hsl(220, 21%, 12%);
+}
+
+    .TickerCursor::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border-style: solid;
+    }
+
+    .TickerCursor::after {
+        left: -20px;
+        border-color: transparent hsl(220, 21%, 12%) transparent transparent;
+        border-width: 10px;
+    }
+
+    .TickerCursor-price {
+        font-size: 18px;
+        color: white;
+    }
+
+    .TickerCursor-volume {
+        margin-top: 5px;
+        font-size: 11px;
+        line-height: 1;
+        color: #CCC9C2;
+    }
